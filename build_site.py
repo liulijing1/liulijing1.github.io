@@ -27,7 +27,10 @@ for p in papers:
  body+='<h2>Original abstract</h2><p>'+e(abstracts[p['slug']])+'</p><p class="meta">Abstract reproduced without changes from <a href="'+doi+'">the original publication</a> by '+e('; '.join(p['authors']))+' (2026), under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</p><p><a href="'+fulltext[p['slug']]+'">Read the publicly available full text'+(' (PDF, early publication)' if p['slug']=='iberian-electricity' else ' (HTML)')+'</a></p>'
  schema['abstract']=abstracts[p['slug']]
  schema['license']='https://creativecommons.org/licenses/by/4.0/'
- if p['slug']=='iberian-electricity':metadata+='<meta name="citation_pdf_url" content="'+fulltext[p['slug']]+'">'
+ if (directory/'paper.pdf').exists():
+  body+='<p><a href="paper.pdf">Download full-text PDF (open access copy)</a></p><p class="meta">Unmodified publisher PDF. '+('Article in Press / early publication; not the final version of record.' if p['slug']=='iberian-electricity' else 'Published journal article.')+' Reproduced under CC BY 4.0; cite the original DOI.</p>'
+  metadata+='<meta name="citation_pdf_url" content="'+base+path+'paper.pdf">'
+ elif p['slug']=='iberian-electricity':metadata+='<meta name="citation_pdf_url" content="'+fulltext[p['slug']]+'">'
  if p['findings']: body+='<h2>Key findings</h2><ul>'+''.join('<li>'+e(f)+'</li>' for f in p['findings'])+'</ul>'
  if p['limits']:body+='<h2>Scope and limitations</h2><p>'+e(p['limits'])+'</p>'
  body+='<h2>Cite this work</h2><p>'+e('; '.join(p['authors'])+'. (2026). '+p['title']+'. '+p['journal']+'. ')+'<a href="'+doi+'">'+e(p['doi'])+'</a></p><pre>'+e(bib)+'</pre>'
